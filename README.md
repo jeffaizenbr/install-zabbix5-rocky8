@@ -54,8 +54,14 @@ systemctl restart postgresql && systemctl enable postgresql
 ```
 ## configure timezone in PHP
 ```bash
+vim /etc/php-fpm.d/zabbix.conf
 php_value[date.timezone] = America/Toronto
 ```
+## add database access on zabbix server conf 
+```bash
+vim /etc/zabbix/zabbix_server.conf
+```
+
 start all services
 ```bash
 systemctl enable --now zabbix-server zabbix-agent httpd php-fpm && tail -f /var/log/zabbix/zabbix_server.log
