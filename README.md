@@ -126,8 +126,9 @@ local   all             all                                     md5
 ```bash
 systemctl restart postgresql && systemctl enable postgresql
 ```
-
+## edit zabbix_proxy configuration file and modify "Server=, Hostname=, database password"
 ```bash
+vim /etc/zabbix/zabbix-proxy.conf
 ```
 
 ```bash
