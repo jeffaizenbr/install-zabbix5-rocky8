@@ -89,17 +89,44 @@ TLSPSKFile=/etc/zabbix/zabbix_proxy.psk
 TLSPSKIdentity=zabbix_proxy
 ```
 
+# Install zabbix proxy
+
+## add repo
 ```bash
+rpm -Uvh https://repo.zabbix.com/zabbix/5.0/rhel/8/x86_64/zabbix-release-latest-5.0.el8.noarch.rpm
+dnf clean all
+```
+## install zabbix
+```bash
+dnf install zabbix-proxy-pgsql
+```
+## install postgresql 13
+```bash
+dnf module list postgresql
+sudo dnf module enable postgresql:13
+sudo dnf install postgresql-server
+sudo postgresql-setup --initdb
+sudo systemctl enable --now  postgresql
+```
+## add user and database
+```bash
+sudo -u postgres createuser --pwprompt zabbix
+sudo -u postgres createdb -O zabbix zabbix_proxy
+```
+## insert zabbix data into database
+```bash
+zcat  /usr/share/doc/zabbix-proxy-pgsql/schema.sql.gz | sudo -u zabbix psql zabbix_proxy
+```
+## Edit pg_hba file to allow MD5 login
+```bash
+vim /var/lib/pgsql/data/pg_hba.conf
+local   all             all                                     md5
+```
+## Restart postgresql
+```bash
+systemctl restart postgresql && systemctl enable postgresql
 ```
 
-```bash
-```
-
-```bash
-```
-
-```bash
-```
 ```bash
 ```
 
