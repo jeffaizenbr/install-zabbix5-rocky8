@@ -103,7 +103,7 @@ dnf install zabbix-proxy-pgsql
 ## install postgresql 13
 ```bash
 dnf module list postgresql
-sudo dnf module enable postgresql:13
+sudo dnf module enable postgresql:16
 sudo dnf install postgresql-server
 sudo postgresql-setup --initdb
 sudo systemctl enable --now  postgresql
