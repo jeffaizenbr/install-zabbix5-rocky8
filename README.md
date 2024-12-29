@@ -68,28 +68,10 @@ systemctl enable --now zabbix-server zabbix-agent httpd php-fpm && tail -f /var/
 ```
 
 
-# Install zabbix proxy
 
-## Install zabbix repo
-```bash
-rpm -Uvh https://repo.zabbix.com/zabbix/5.0/rhel/8/x86_64/zabbix-release-latest-5.0.el8.noarch.rpm
-```
-## install zabbix proxy
-```bash
-dnf install zabbix-proxy-sqlite3
-```
-## Generate TLS PSKI for proxy 
-```bash
-openssl rand -hex 32 > /etc/zabbix/zabbix_proxy.psk
-```
-## add TLS PSKI configuration on zabbix file
-```bash
-TLSConnect=psk
-TLSPSKFile=/etc/zabbix/zabbix_proxy.psk
-TLSPSKIdentity=zabbix_proxy
-```
 
 # Install zabbix proxy
+
 
 ## add repo
 ```bash
@@ -128,8 +110,19 @@ systemctl restart postgresql && systemctl enable postgresql
 ```
 ## edit zabbix_proxy configuration file and modify "Server=, Hostname=, database password"
 ```bash
-vim /etc/zabbix/zabbix-proxy.conf
+vim /etc/zabbix/zabbix_proxy.conf
 ```
+## Generate TLS PSKI for proxy 
+```bash
+openssl rand -hex 32 > /etc/zabbix/zabbix_proxy.psk
+```
+## add TLS PSKI configuration on zabbix file
+```bash
+TLSConnect=psk
+TLSPSKFile=/etc/zabbix/zabbix_proxy.psk
+TLSPSKIdentity=zabbix_proxy
+```
+
 
 ```bash
 ```
