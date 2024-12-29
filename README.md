@@ -123,8 +123,15 @@ TLSPSKFile=/etc/zabbix/zabbix_proxy.psk
 TLSPSKIdentity=zabbix_proxy
 ```
 
-
+# Process do dump and restore
 ```bash
+pg_dump -U postgres -F c -b -v -f /tmp/zabbix_dump.dump zabbix
+
+psql -U postgres -d zabbix -c "DROP SCHEMA public CASCADE;"
+psql -U postgres -c "DROP DATABASE IF EXISTS zabbix;"
+psql -U postgres -c "CREATE DATABASE zabbix;"
+
+pg_restore -U postgres -d zabbix -v /tmp/zabbix_dump.dump
 ```
 
 ```bash
