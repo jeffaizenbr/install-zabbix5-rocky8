@@ -133,12 +133,3 @@ psql -U postgres -c "CREATE DATABASE zabbix;"
 
 pg_restore -U postgres -d zabbix -v /tmp/zabbix_dump.dump
 ```
-
-```bash
-```
-
-```bash
-```
-
-```bash
-```
