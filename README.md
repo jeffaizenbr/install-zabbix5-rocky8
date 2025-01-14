@@ -3,6 +3,22 @@
 #ORIGIN = brppzbm01 <br>
 #DESTINY = brpldsinfzbs01
 
+user postgres crontab
+```bash
+# Daily base backup of postgres databases
+0 22 * * *  /var/lib/pgsql/pg_databasebackup.sh >> "/tmp/$(hostname).$(date +\%Y\%m\%d).pg_databasebackup.log" 2>&1
+```
+user root crontab
+```bash
+#Ansible: Rogier's DSG Report
+5 * * * * /usr/local/report/dsg_linux_system_inventory.pl > /var/log/report/dsg_linux_system_inventory.log 2>&1
+#
+57 * * * * /data/dsg_linux_system_report/bin/refresh_cmdb.sh                                 > /data/dsg_linux_system_inventory/log/refresh_cmdb.log 2>&1
+```
+```bash
+```
+```bash
+```
 
 ## Install zabbix repo
 ```bash
