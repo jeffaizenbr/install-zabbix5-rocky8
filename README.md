@@ -135,6 +135,11 @@ pg_restore -U postgres -d zabbix -v /tmp/zabbix_dump.dump
 ```
 
 ## DEFINITIVE DUMP AND RESTORE
+
+#NOTES
+backups located at > /mnt/backup/OnDisk/brppzbm01/pgbackup/zabbix
+copy to local storage > /data/pgsql/DUMP
+
 #DUMP
 ```bash
 pg_dump -U postgres -F c -b -v -f /tmp/zabbix_dump.dump zabbix
@@ -148,3 +153,10 @@ GRANT ALL PRIVILEGES ON DATABASE zabbix TO zabbix;
 CREATE ROLE report;
 pg_restore -U postgres -d zabbix --jobs=4 --verbose pg_dump.brppzbm01.prd.dsg-internal.5432.zabbix.20250112_220001.custom
 ```
+
+
+cp -rfp /mnt/backup/OnDisk/brppzbm01/pgbackup/zabbix/pg_dump.brppzbm01.prd.dsg-internal.5432.zabbix.20250112_220001.custom .
+
+
+
+
