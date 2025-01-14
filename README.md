@@ -15,7 +15,77 @@ user root crontab
 #
 57 * * * * /data/dsg_linux_system_report/bin/refresh_cmdb.sh                                 > /data/dsg_linux_system_inventory/log/refresh_cmdb.log 2>&1
 ```
+
+
+>> /var/lib/pgsql/pg_databasebackup.sh <<
 ```bash
+#!/bin/bash
+
+PORT_NUMBER=5432
+BACKUP_DIR="/mnt/backup/OnDisk/brppzbm01/pgbackup"
+EXITCODE=0
+
+function pg_databasebackup ()
+{
+
+        #outpu start time
+        echo "##############################################################################################################################"
+        echo "START: $(date)"
+        echo
+
+        #get list of databases to backup
+        DATABASES=$(psql -p $PORT_NUMBER -At -c "select datname from pg_database where not datistemplate and datallowconn order by datname;" postgres)
+
+        #if no databases caputred then quit
+        if [[ -z ${DATABASES} ]]
+        then
+                #error getting list of databses, set exit code and provide message
+                EXITCODE=1
+                echo "ERROR: No databases found, confirm port number: ${PORT_NUMBER} is correct and that cluster is online and accessible!!!"
+        else
+                #for each database
+                for DATABASE in ${DATABASES}
+                do
+                        #if backup directory does not exist create it
+                        if [ ! -d "${BACKUP_DIR}/${DATABASE}" ]; then mkdir "${BACKUP_DIR}/${DATABASE}"; fi
+
+                        #set backup filename
+                        BACKUPFILENAME="${BACKUP_DIR}/${DATABASE}/pg_dump.$(hostname).${PORT_NUMBER}.${DATABASE}.$(date +\%Y\%m\%d_\%H\%M\%S).custom"
+
+                        #output backup command used
+                        echo pg_dump -Fc -p ${PORT_NUMBER} "${DATABASE}" -f "${BACKUPFILENAME}"
+
+                        #backup database
+                        if ! pg_dump -Fc -p ${PORT_NUMBER} "${DATABASE}" -f "${BACKUPFILENAME}"
+                        then
+                                #error backing up, set exit code and provide message
+                                EXITCODE=1
+                                echo "ERROR: Backup operation for database ${DATABASE} unsuccessful!!!"
+                        else
+                                echo "INFO : Backup of database ${DATABASE} completed."
+
+                                #delete old backup
+                                #echo "INFO : Deleting following backups files older than ${DAYS_TO_RETAIN} days:"
+                                #find "${BACKUP_DIR}/${DATABASE}" -maxdepth 1 -name "pg_dump.$(hostname).${PORT_NUMBER}.${DATABASE}.*.custom" -mtime +${DAYS_TO_RE$
+                                #find "${BACKUP_DIR}/${DATABASE}" -maxdepth 1 -name "pg_dump.$(hostname).${PORT_NUMBER}.${DATABASE}.*.custom" -mtime +${DAYS_TO_RE$
+
+                        fi
+                        echo
+                done
+        fi
+
+
+        #provide completion message
+        if [ ${EXITCODE} -eq 0 ]; then
+                echo "END  : $(date), SUCCESS"
+        else
+                echo "END  : $(date), ERRORS ENCOUNTERED!!! CHECK PREVIOUS MESSAGES!!!"
+        fi
+
+        exit ${EXITCODE}
+}
+
+pg_databasebackup;
 ```
 ```bash
 ```
