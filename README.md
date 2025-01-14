@@ -137,7 +137,7 @@ pg_restore -U postgres -d zabbix -v /tmp/zabbix_dump.dump
 ## DEFINITIVE DUMP AND RESTORE
 
 #NOTES
-backups located at > /mnt/backup/OnDisk/brppzbm01/pgbackup/zabbix
+backups located at > /mnt/backup/OnDisk/brppzbm01/pgbackup/zabbix <br>
 copy to local storage > /data/pgsql/DUMP
 
 #DUMP
