@@ -1,5 +1,9 @@
 # install-zabbix5-rocky8
 
+#ORIGIN = brppzbm01 <br>
+#DESTINY = brpldsinfzbs01
+
+
 ## Install zabbix repo
 ```bash
 rpm -Uvh https://repo.zabbix.com/zabbix/5.0/rhel/8/x86_64/zabbix-release-latest-5.0.el8.noarch.rpm
