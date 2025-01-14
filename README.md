@@ -1834,6 +1834,36 @@ sub     flatten_node
 }
 ```
 
+
+
+<</data/dsg_linux_system_report/bin/refresh_cmdb.sh>>
+```bash
+#!/bin/bash
+
+cd `dirname $0`
+
+DATE=`date +'%Y%m%d'`
+
+FN="../var/cmdb/cmdb"
+
+echo $FN;
+
+./cmdbv2.pl show_xml > "$FN.TMP"
+
+VALID=`xmlstarlet val "$FN.TMP" 2>/dev/null | grep "$FN.TMP - valid" | wc -l`
+
+if      [[ $VALID -eq 1 ]]
+then
+        echo $FN.TMP is OK.; echo
+        mv "$FN.TMP" "$FN.xml"
+fi
+
+ls -lrt ../var/cmdb/cmdb.*
+```
+
+
+
+
 ## Install zabbix repo
 ```bash
 rpm -Uvh https://repo.zabbix.com/zabbix/5.0/rhel/8/x86_64/zabbix-release-latest-5.0.el8.noarch.rpm
